@@ -17,3 +17,6 @@
 *.REMOTE.*
 *.BASE.*
 *.BACKUP.*
+
+### logs
+/logs/*.log

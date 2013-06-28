@@ -7,11 +7,17 @@
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/.
 '''
 
+import os
+
 from flask import Flask
+from logbook import Logger
 
 import config
 import blueprints
 import routes
+import utils
+
+where_are_we_path = os.path.dirname(os.path.dirname(__file__))
 
 def create_app():
     app = Flask(__name__, static_url_path='/static', static_folder='../static')
@@ -21,11 +27,16 @@ def create_app():
 
     return app
 
+logger = utils.get_logging_setup(config.LOG_LEVEL, where_are_we_path + '/logs/%s.log' % __name__)
 
-app = create_app()
+with logger.applicationbound():
+    log = Logger(__name__)
+    log.debug('Starting application...')
 
-app.config.from_object(config)
+    app = create_app()
 
-if __name__ == '__main__':
-    app.debug = True
-    app.run()
+    app.config.from_object(config)
+
+    if __name__ == '__main__':
+        app.debug = True
+        app.run()

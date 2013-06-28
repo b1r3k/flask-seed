@@ -19,7 +19,7 @@ class RenderTemplateView(View):
         return render_template(self.template_name)
 
 
-views = [{'endpoint': '/', 'view_func': RenderTemplateView.as_view('index', template_name='index.jinja2')},
+views = [{'endpoint': '/','view_func': RenderTemplateView.as_view('index', template_name='index.jinja2')},
 ]
 
 def create_routing(app):
