@@ -1,0 +1,19 @@
+# Python
+/env
+/build
+*.pyc
+
+# IDE
+.idea
+
+### diff & patch
+*.diff
+*.patch
+*.rej
+*.orig
+
+### merge
+*.LOCAL.*
+*.REMOTE.*
+*.BASE.*
+*.BACKUP.*
