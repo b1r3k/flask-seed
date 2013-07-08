@@ -25,7 +25,7 @@ Skeleton for flask based web applications.
 
 ## Adjusting development environment
 
-Foreman takes variables from .env and creates environment variables.
-Config.settings defines defaults and overrides them with environment variables, eg. for dev setup use FLASK_ENV=development and DEBUG=True
-Variables should have all uppercase names!
-.env file should not go to production or should be ignored on production setup
+1. config.py defines different config objects default containging settings for the app.
+    - for development environment use config.Dev object
+2. Config object can be overriden by specifing path to config via environmental variable FLASK_SEED_CONFIG
+    - Foreman can do this job, just set the variable in the .env file
