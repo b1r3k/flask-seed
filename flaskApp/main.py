@@ -19,23 +19,25 @@ import utils
 
 where_are_we_path = os.path.dirname(os.path.dirname(__file__))
 
-def create_app():
+
+def create_app(config_object=config.Default):
     app = Flask(__name__, static_url_path='/static', static_folder='../static')
     app.register_blueprint(blueprints.restapi.blueprint, url_prefix='/api')
+
+    app.config.from_object(config_object)
+    app.config.from_envvar('FLASK_SEED_CONFIG', silent=True)
 
     routes.create_routing(app)
 
     return app
 
-logger = utils.get_logging_setup(config.LOG_LEVEL, where_are_we_path + '/logs/%s.log' % __name__)
+
+app = create_app()
+logger = utils.get_logging_setup(app.config['LOG_LEVEL'], where_are_we_path + '/logs/%s.log' % __name__)
 
 with logger.applicationbound():
     log = Logger(__name__)
     log.debug('Starting application...')
-
-    app = create_app()
-
-    app.config.from_object(config)
 
     if __name__ == '__main__':
         app.debug = True

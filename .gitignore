@@ -5,6 +5,7 @@
 
 # IDE
 .idea
+*.iml
 
 ### diff & patch
 *.diff
