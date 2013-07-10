@@ -30,3 +30,9 @@ Skeleton for flask based web applications.
 1. If you want to select config setup, without code modification you can set CONFIG variable with class name defined in config/config.py
 1. Config object can be overriden by specifing path to config via environmental variable FLASK_SEED_CONFIG
     - Foreman can do this job, just set the variable in the .env file
+## Logging
+
+- based on logbook
+- setup globally for application.
+- see flaskApp/main.py and flaskApp/blueprints/restapi/HelloWorld.py for usage examples
+- default setup directs logs to stderr and file, see utils/logger.py for setup details

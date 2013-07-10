@@ -9,17 +9,59 @@
 
 import logbook
 
-def get_logging_setup(log_level, log_filename):
-    format_string = '{record.channel}: {record.message}'
 
-    time_rotating_handler = logbook.TimedRotatingFileHandler(log_filename,
-                                                         date_format='%Y-%m-%d',
-                                                         format_string=format_string)
+class LoggingSetup(object):
+    format_string = None
+    handlers = None
 
-    stderr_handler = logbook.StderrHandler(level=log_level)
-    stderr_handler.format_string = format_string
-    stderr_handler.formatter
+    def __init__(self, log_level, format_string=None):
+        self.handlers = []
+        self.log_level = log_level
 
-    nested_log_setup = logbook.NestedSetup([ stderr_handler, time_rotating_handler ])
+        if not format_string:
+            self.format_string = '[{record.time}]: {record.level_name} - {record.channel}: {record.message}'
 
-    return nested_log_setup
+    def add_handler(self, handler):
+        self.handlers.append(handler)
+
+
+    def add_stderr_log(self):
+        stderr_handler = logbook.StderrHandler(level=self.log_level)
+        stderr_handler.format_string = self.format_string
+        stderr_handler.formatter
+
+        self.add_handler(stderr_handler)
+
+    def get_nested_setup(self):
+        nested_log_setup = logbook.NestedSetup(self.handlers)
+
+        return nested_log_setup
+
+    def get_default_setup(self):
+
+        self.add_stderr_log()
+
+        return self.get_nested_setup()
+
+class ProdLoggingSetup(LoggingSetup):
+    def __init__(self, log_level, filebased_log_path, format_string=None):
+        super(ProdLoggingSetup, self).__init__(log_level, format_string)
+
+        self.filebased_log_path = filebased_log_path
+
+    def add_filebased_log(self, filename):
+        time_rotating_handler = logbook.TimedRotatingFileHandler(filename,
+                                                                 date_format='%Y-%m-%d',
+                                                                 format_string=self.format_string)
+
+        self.add_handler(time_rotating_handler)
+
+    def get_default_setup(self):
+        super(ProdLoggingSetup, self).get_default_setup()
+
+        self.add_filebased_log(self.filebased_log_path)
+
+        return self.get_nested_setup()
+
+
+

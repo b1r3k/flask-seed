@@ -19,12 +19,12 @@ import utils
 
 log = Logger(__name__)
 
+
 def create_app(config_object):
     app = Flask(__name__, static_url_path='/static', static_folder='../static')
     app.register_blueprint(blueprints.restapi.blueprint, url_prefix='/api')
 
     app.config.from_object(config_object)
-
     override_env_name = 'FLASK_SEED_CONFIG'
     if app.config.from_envvar(override_env_name, silent=True):
         path = os.environ[override_env_name]
@@ -39,10 +39,14 @@ def create_app(config_object):
 config_name = os.getenv('CONFIG', 'Default')
 app = create_app(config_object=config.defined[config_name])
 
-logger = utils.get_logging_setup(app.config['LOG_LEVEL'], app.config['LOG_DIR'] + '%s.log' % app.config['APP_NAME'])
+if app.config['LOG_LEVEL'] == 'INFO':
+    log_setup = utils.LoggingSetup(app.config['LOG_LEVEL'])
+else:
+    log_setup = utils.ProdLoggingSetup(app.config['LOG_LEVEL'], app.config['LOG_DIR'] + '%s.log' % app.config['APP_NAME'])
 
-with logger.applicationbound():
-    log = Logger(__name__)
+nested_log_setup = log_setup.get_default_setup()
+
+with nested_log_setup.applicationbound():
     log.debug('Starting application...')
 
     if __name__ == '__main__':

@@ -7,5 +7,6 @@
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/.
 '''
 
-from logger import get_logging_setup
+from logger import LoggingSetup
+from logger import ProdLoggingSetup
 
