@@ -1,4 +1,7 @@
 import unittest
+import os
+
+os.environ['CONFIG'] = 'Dev'
 
 from flaskApp.main import app
 

@@ -29,3 +29,10 @@ Skeleton for flask based web applications.
     - for development environment use config.Dev object
 2. Config object can be overriden by specifing path to config via environmental variable FLASK_SEED_CONFIG
     - Foreman can do this job, just set the variable in the .env file
+
+## Logging
+
+- based on logbook
+- setup globally for application.
+- see flaskApp/main.py and flaskApp/blueprints/restapi/HelloWorld.py for usage examples
+- default setup directs logs to stderr and file, see utils/logger.py for setup details

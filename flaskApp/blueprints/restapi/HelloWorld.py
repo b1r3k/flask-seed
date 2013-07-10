@@ -11,17 +11,21 @@ from functools import wraps
 from flask import Response, request
 from flask.ext import restful
 
-def check_auth(auth):
+from logbook import Logger
 
+log = Logger(__name__)
+
+
+def check_auth(auth):
     if not auth:
         return False
 
     return False
 
+
 def authenticate(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-
         if check_auth(request.authorization):
             return func(*args, **kwargs)
 
@@ -31,15 +35,21 @@ def authenticate(func):
 
     return wrapper
 
+
 class ProtectedResource(restful.Resource):
     method_decorators = [authenticate]
 
-class HelloWorld(restful.Resource):
 
+class HelloWorld(restful.Resource):
     def get(self):
+        log.debug('Someone said hello to me!')
+
         return {'msg': 'hello world!'}
 
-class SecretWorld(ProtectedResource):
 
+class SecretWorld(ProtectedResource):
     def get(self):
         return {'msg': 'hello secret world!'}
+
+
+

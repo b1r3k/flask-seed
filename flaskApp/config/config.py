@@ -7,11 +7,12 @@
  * To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/.
 '''
 
-
 class Default(object):
+    APP_NAME = 'flask-seed'
     DEBUG = False
     SECRET_KEY = '\x1e\xfa\xbe1\xf2\xc49\xd6\xb4c\xf1\xb4\t\x9cb\xcf.Og{\x1e\n@\xf7'
     LOG_LEVEL = 'WARNING'
+    LOG_DIR = 'logs/'
 
 
 class Dev(Default):

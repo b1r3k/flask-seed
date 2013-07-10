@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$FLASK_ENV" == "development" ]
+if [ "$CONFIG" == "Dev" ]
 then
     python flaskApp/main.py
 else
