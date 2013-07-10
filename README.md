@@ -25,7 +25,8 @@ Skeleton for flask based web applications.
 
 ## Adjusting development environment
 
-1. config.py defines different config objects default containging settings for the app.
+1. config/config.py defines different config objects default containging settings for the app.
     - for development environment use config.Dev object
-2. Config object can be overriden by specifing path to config via environmental variable FLASK_SEED_CONFIG
+1. If you want to select config setup, without code modification you can set CONFIG variable with class name defined in config/config.py
+1. Config object can be overriden by specifing path to config via environmental variable FLASK_SEED_CONFIG
     - Foreman can do this job, just set the variable in the .env file

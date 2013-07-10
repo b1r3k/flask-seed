@@ -17,23 +17,29 @@ import blueprints
 import routes
 import utils
 
-where_are_we_path = os.path.dirname(os.path.dirname(__file__))
+log = Logger(__name__)
 
-
-def create_app(config_object=config.Default):
+def create_app(config_object):
     app = Flask(__name__, static_url_path='/static', static_folder='../static')
     app.register_blueprint(blueprints.restapi.blueprint, url_prefix='/api')
 
     app.config.from_object(config_object)
-    app.config.from_envvar('FLASK_SEED_CONFIG', silent=True)
+
+    override_env_name = 'FLASK_SEED_CONFIG'
+    if app.config.from_envvar(override_env_name, silent=True):
+        path = os.environ[override_env_name]
+        log.info('Overriding config by environment variable: %s = %s' % (override_env_name, path))
 
     routes.create_routing(app)
 
     return app
 
+### MAIN
 
-app = create_app()
-logger = utils.get_logging_setup(app.config['LOG_LEVEL'], where_are_we_path + '/logs/%s.log' % __name__)
+config_name = os.getenv('CONFIG', 'Default')
+app = create_app(config_object=config.defined[config_name])
+
+logger = utils.get_logging_setup(app.config['LOG_LEVEL'], app.config['LOG_DIR'] + '%s.log' % app.config['APP_NAME'])
 
 with logger.applicationbound():
     log = Logger(__name__)
